@@ -1,0 +1,14 @@
+[
+  {"caso":"vacia","tipo":"titulo","texto":"Caso borde 1: estructura vacia (N=0)"},
+  {"caso":"vacia","tipo":"init_inicio","n":0,"tamanoBloque":1,"numeroDeBloques":0},
+  {"caso":"vacia","tipo":"init_fin","numeroDeBloques":0},
+  {"caso":"vacia","tipo":"consulta_inicio","izquierda":0,"derecha":-1},
+  {"caso":"vacia","tipo":"consulta_fin","resultado":0},
+  {"caso":"un_elemento","tipo":"titulo","texto":"Caso borde 2: un solo elemento (N=1)"},
+  {"caso":"un_elemento","tipo":"init_inicio","n":1,"tamanoBloque":1,"numeroDeBloques":1},
+  {"caso":"un_elemento","tipo":"init_elemento","indice":0,"valor":42,"bloque":0,"sumaBloqueParcial":42},
+  {"caso":"un_elemento","tipo":"init_fin","numeroDeBloques":1},
+  {"caso":"un_elemento","tipo":"consulta_inicio","izquierda":0,"derecha":0},
+  {"caso":"un_elemento","tipo":"consulta_bloque","bloque":0,"sumaBloque":42,"acumulado":42},
+  {"caso":"un_elemento","tipo":"consulta_fin","resultado":42}
+]

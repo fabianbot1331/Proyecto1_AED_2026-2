@@ -1,0 +1,17 @@
+# Binarios compilados de C++
+src/*.exe
+src/sqrt_demo
+src/casos_borde
+*.o
+
+# Entorno virtual de Python
+venv/
+__pycache__/
+*.pyc
+
+# Output de Manim (videos e imágenes renderizadas, pesan mucho para git)
+animacion/media/
+
+# Sistema
+.DS_Store
+Thumbs.db
