@@ -14,8 +14,9 @@
 ## Descripción
 
 Este proyecto implementa la estructura de datos **Sqrt Decomposition** en C++ y genera un video
-educativo animado (estilo 3Blue1Brown / Manim) que explica su funcionamiento, sus operaciones
-principales y casos borde relevantes.
+educativo animado con Manim que explica su funcionamiento, sus operaciones principales y casos
+borde relevantes. El estilo visual se inspira en el recomendado por el enunciado del curso
+(canal 3Blue1Brown), pero todo el contenido (código, eventos, animación) es original del grupo.
 
 La estructura divide un arreglo de `N` elementos en bloques de tamaño `O(√N)`, precalculando la
 suma de cada bloque. Esto permite responder consultas de suma en un rango y actualizaciones
@@ -56,6 +57,48 @@ compilar y renderizar — no hay pasos animados manualmente.
   `consultar` sobre un rango vacío no rompe nada.
 - Un solo elemento (`N=1`): el bloque de tamaño 1 hace que hasta la consulta más chica entre
   por el camino de "bloque completo" en vez de "elemento suelto".
+
+## Cómo se implementó el código y la animación
+
+**1. La estructura de datos en sí (`sqrtDecomposition`)** está implementada desde cero en C++,
+sin usar ninguna librería estándar o de terceros para la lógica de bloques/sumas (solo STL
+genérico como `vector`). Tiene tres atributos: el arreglo `valores`, el arreglo `sumaBloques`
+(una suma precalculada por bloque) y `aumentoPendiente` (para lazy propagation en
+`actualizarRango`). El tamaño de bloque se calcula como `max(1, (int)sqrt(N))`.
+
+**2. Instrumentación con eventos reales.** Cada método (`consultar`, `actualizar`,
+`actualizarRango`, y el propio constructor) llama a una función `logEvento(...)` en cada
+sub-paso relevante de su lógica — por ejemplo, cada vez que suma un elemento suelto, cada vez
+que usa la suma precalculada de un bloque completo, o cada vez que marca un bloque como
+"pendiente". La lógica del algoritmo **no cambia en nada**; `logEvento` solo escribe una línea
+JSON describiendo lo que acaba de pasar:
+
+```cpp
+void logEvento(const string& json) {
+    if (!primerEvento) logFile << ",\n";
+    logFile << "  " << json;
+    primerEvento = false;
+}
+```
+
+**3. Al correr el programa (`main()`)**, se ejecutan las operaciones con datos concretos
+(inicialización, consultas, actualizaciones) y cada llamada a `logEvento` va acumulando un
+arreglo JSON en `eventos.json` (o `eventos_bordes.json` para los casos borde). Este archivo es
+la prueba de que la animación está impulsada por una ejecución real: contiene, en orden, cada
+decisión que tomó el algoritmo con esos datos de entrada.
+
+**4. La animación en Manim (`animacion_sqrt_decomp.py` / `animacion_casos_borde.py`)** abre ese
+JSON y recorre los eventos uno por uno. Por cada tipo de evento dibuja la acción correspondiente
+(ej. `consulta_suelto` pinta una celda de amarillo y actualiza el acumulado en pantalla;
+`consulta_bloque` pinta el rectángulo del bloque de verde y usa directamente su suma
+precalculada). El script **no contiene ningún valor inventado a mano**: todos los números,
+índices y sumas que aparecen en el video vienen de los campos del JSON, que a su vez vienen de
+la ejecución real del `.cpp`.
+
+**Consecuencia práctica:** si cambian el arreglo de entrada o los parámetros de las consultas en
+el `main()` del `.cpp`, no hay que tocar ni una línea del script de Manim — solo recompilar,
+volver a correr el binario (que regenera el JSON) y volver a renderizar. El video se actualiza
+solo porque describe una ejecución distinta.
 
 ## Software requerido
 
