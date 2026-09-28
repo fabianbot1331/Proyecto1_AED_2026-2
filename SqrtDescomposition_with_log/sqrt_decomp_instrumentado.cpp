@@ -1,12 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// ============================================================
-// Esta es TU clase (sqrtDecomposition) con lazy propagation,
-// solo le agrego líneas que registran cada sub-paso en un log
-// de eventos. La lógica de la estructura NO cambia en nada.
-// ============================================================
-
 ofstream logFile;
 bool primerEvento = true;
 
@@ -132,7 +126,6 @@ public:
                 aumentoPendiente[bloque] += aumento;
                 sumaBloques[bloque] += aumento * cantidadElementos;
 
-                // LOG: bloque completo -> se marca "perezoso" (lazy), no se toca cada elemento
                 logEvento("{\"tipo\":\"actualizarRango_bloque\",\"bloque\":" + to_string(bloque) +
                            ",\"nuevoAumentoPendiente\":" + to_string(aumentoPendiente[bloque]) +
                            ",\"nuevaSumaBloque\":" + to_string(sumaBloques[bloque]) + "}");
@@ -142,7 +135,6 @@ public:
                 valores[izquierda] += aumento;
                 sumaBloques[bloque] += aumento;
 
-                // LOG: elemento suelto -> se actualiza directo
                 logEvento("{\"tipo\":\"actualizarRango_suelto\",\"indice\":" + to_string(izquierda) +
                            ",\"nuevoValorBase\":" + to_string(valores[izquierda]) +
                            ",\"nuevaSumaBloque\":" + to_string(sumaBloques[bloque]) + "}");
