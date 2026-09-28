@@ -1,14 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// ============================================================
-// Genera eventos_bordes.json con DOS casos borde reales:
-//   1) Estructura vacía (N=0)
-//   2) Un solo elemento (N=1)
-// Cada evento lleva el campo "caso" para que la animación
-// sepa a cuál de los dos pertenece.
-// ============================================================
-
 ofstream logFile;
 bool primerEvento = true;
 
@@ -94,7 +86,7 @@ int main() {
     logFile.open("eventos_bordes.json");
     logFile << "[\n";
 
-    // ---------- CASO 1: ESTRUCTURA VACÍA ----------
+    //  CASO 1: ESTRUCTURA VACÍA 
     logEvento("{\"caso\":\"vacia\",\"tipo\":\"titulo\",\"texto\":\"Caso borde 1: estructura vacia (N=0)\"}");
     vector<long long> arregloVacio = {};
     sqrtDecomposition estructuraVacia(arregloVacio, "vacia");
@@ -102,7 +94,7 @@ int main() {
     long long r1 = estructuraVacia.consultar(0, -1);
     cout << "Consulta sobre estructura vacia = " << r1 << " (no crashea)\n";
 
-    // ---------- CASO 2: UN SOLO ELEMENTO ----------
+    // CASO 2: UN SOLO ELEMENTO 
     logEvento("{\"caso\":\"un_elemento\",\"tipo\":\"titulo\",\"texto\":\"Caso borde 2: un solo elemento (N=1)\"}");
     vector<long long> arregloUno = {42};
     sqrtDecomposition estructuraUno(arregloUno, "un_elemento");
