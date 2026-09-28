@@ -1,16 +1,3 @@
-"""
-Animación de Sqrt Decomposition impulsada por datos REALES.
-
-Cómo funciona:
-1. Corres tu C++ instrumentado -> genera eventos.json con cada sub-paso real.
-2. Este script LEE eventos.json y dibuja exactamente esa secuencia.
-   No hay ningún valor "inventado a mano" aquí: todo viene del JSON.
-
-Para renderizar:
-    manim -pql animacion_sqrt_decomp.py DemoSqrtDecomp
-(usa -qh para alta calidad en la entrega final)
-"""
-
 import json
 from manim import *
 
@@ -33,18 +20,18 @@ class DemoSqrtDecomp(Scene):
         self.wait(1)
         self.play(FadeOut(titulo), FadeOut(subtitulo))
 
-        # Estructuras que vamos a ir llenando a medida que procesamos eventos
-        celdas = {}          # indice -> Square (representa valores[indice])
-        etiquetas = {}       # indice -> Text (representa el valor mostrado)
-        bloques_rect = {}    # bloque -> SurroundingRectangle
-        bloques_texto = {}   # bloque -> Text (suma del bloque)
+       
+        celdas = {}          
+        etiquetas = {}       
+        bloques_rect = {}    
+        bloques_texto = {}   
         tamano_bloque = None
         acumulado_texto = None
 
         for evento in EVENTOS:
             tipo = evento["tipo"]
 
-            # ---------- INICIALIZACIÓN ----------
+         
             if tipo == "init_inicio":
                 tamano_bloque = evento["tamanoBloque"]
                 n = evento["n"]
@@ -70,7 +57,6 @@ class DemoSqrtDecomp(Scene):
                 etiquetas[idx] = num
                 self.play(FadeIn(cuadro), Write(num), run_time=0.15)
 
-                # Si es el primer elemento de un bloque nuevo, dibuja el rectángulo del bloque
                 if bloque not in bloques_rect:
                     inicio_bloque = bloque * tamano_bloque
                     fin_bloque = inicio_bloque + tamano_bloque - 1
@@ -88,7 +74,6 @@ class DemoSqrtDecomp(Scene):
                     self.play(Write(txt), run_time=0.2)
                 self.wait(0.5)
 
-            # ---------- CONSULTA ----------
             elif tipo == "consulta_inicio":
                 l, r = evento["izquierda"], evento["derecha"]
                 texto = Text(f"consultar({l}, {r})", font_size=26, color=YELLOW)
@@ -102,10 +87,7 @@ class DemoSqrtDecomp(Scene):
                 valor_real = evento["valor"]
                 self.play(celdas[idx].animate.set_color(COLOR_SUELTO), run_time=0.3)
 
-                # Si el valor real (base + pendiente) no coincide con lo que muestra
-                # la celda, es porque este elemento vive en un bloque que recibió un
-                # aumento "perezoso" y nunca se repintó individualmente. Lo corregimos
-                # AQUÍ, justo cuando el algoritmo real lo usa por primera vez.
+              
                 if etiquetas[idx].text != str(valor_real):
                     nota = Text("(incluye pendiente)", font_size=14, color=PURPLE)
                     nota.next_to(celdas[idx], UP, buff=0.05)
@@ -131,7 +113,6 @@ class DemoSqrtDecomp(Scene):
                 self.wait(1)
                 self.play(FadeOut(self.consulta_texto), FadeOut(acumulado_texto), FadeOut(resultado))
 
-            # ---------- ACTUALIZACIÓN ----------
             elif tipo == "actualizar_inicio":
                 idx = evento["indice"]
                 texto = Text(
@@ -149,11 +130,9 @@ class DemoSqrtDecomp(Scene):
                 nuevo_txt.move_to(bloques_texto[b])
                 self.play(Transform(bloques_texto[b], nuevo_txt))
                 idx = None
-                # regresa la celda a su color normal
                 self.wait(0.3)
                 self.play(FadeOut(self.actualizar_texto))
 
-            # ---------- ACTUALIZACIÓN DE RANGO (lazy propagation) ----------
             elif tipo == "actualizarRango_inicio":
                 l, r, aumento = evento["izquierda"], evento["derecha"], evento["aumento"]
                 texto = Text(
@@ -164,7 +143,6 @@ class DemoSqrtDecomp(Scene):
 
             elif tipo == "actualizarRango_bloque":
                 b = evento["bloque"]
-                # Bloque completo: se marca "perezoso" (lazy) sin tocar cada celda una por una
                 etiqueta_lazy = Text(
                     f"+{evento['nuevoAumentoPendiente']} pendiente", font_size=16, color=PURPLE
                 ).next_to(bloques_rect[b], UP, buff=0.1)
