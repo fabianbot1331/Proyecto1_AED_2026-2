@@ -35,8 +35,9 @@ compilar y renderizar — no hay pasos animados manualmente.
 ├── README.md
 ├── requirements.txt
 ├── SqrtDescomposition_with_log/
-│   ├── sqrt_decomp_instrumentado.cpp   # Implementación + logging de eventos (operaciones principales)
-│   └── casos_borde.cpp                 # Implementación + logging de eventos (casos borde)
+│   ├── sqrt_decomposition.cpp           # Implementación base, sin logging (la estructura tal cual)
+│   ├── sqrt_decomp_instrumentado.cpp    # Misma implementación + logging de eventos (operaciones principales)
+│   └── casos_borde.cpp                  # Misma implementación + logging de eventos (casos borde)
 └── animacion/
     ├── animacion_sqrt_decomp.py        # Escena Manim: operaciones principales
     ├── animacion_casos_borde.py        # Escena Manim: casos borde
@@ -60,7 +61,7 @@ compilar y renderizar — no hay pasos animados manualmente.
 
 ## Cómo se implementó el código y la animación
 
-**1. La estructura de datos en sí (`sqrtDecomposition`)** está implementada desde cero en C++,
+**1. La estructura de datos en sí (`SqrtDecomposition`)** está implementada desde cero en C++,
 sin usar ninguna librería estándar o de terceros para la lógica de bloques/sumas (solo STL
 genérico como `vector`). Tiene tres atributos: el arreglo `valores`, el arreglo `sumaBloques`
 (una suma precalculada por bloque) y `aumentoPendiente` (para lazy propagation en
@@ -121,6 +122,29 @@ pip install -r requirements.txt
 
 ## Cómo compilar y correr la implementación en C++
 
+**1) Implementación base de `sqrtDecomposition` (sin logging, el código de la estructura tal cual)**
+
+Este es el archivo que muestra la estructura de datos en su forma más limpia, sin nada relacionado
+a la animación — útil para revisar la lógica pura de bloques, sumas precalculadas y lazy propagation:
+
+```bash
+cd src
+g++ -std=c++17 -O2 -o sqrt_decomposition sqrt_decomposition.cpp
+./sqrt_decomposition
+```
+
+Salida esperada:
+
+```
+46
+52
+10
+112
+15
+```
+
+**2) Versión instrumentada (genera los eventos que usa la animación)**
+
 ```bash
 cd src
 
@@ -172,10 +196,6 @@ El enunciado pide **un único video** de 1 a 5 minutos. Para concatenar los dos 
 
 ffmpeg -f concat -safe 0 -i lista.txt -c copy video_final.mp4
 ```
-
-## Autores
-
-_(completar con los integrantes del grupo)_
 
 ## Referencias
 
