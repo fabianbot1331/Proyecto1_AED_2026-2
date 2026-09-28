@@ -1,13 +1,3 @@
-"""
-Animación de los 2 casos borde de Sqrt Decomposition.
-Lee eventos_bordes.json (generado por casos_borde.cpp real).
-
-Duración objetivo: ~25-30 segundos.
-
-Renderizar con:
-    python -m manim -pql animacion_casos_borde.py CasosBorde
-"""
-
 import json
 from manim import *
 
@@ -29,7 +19,6 @@ class CasosBorde(Scene):
                 self.play(Write(texto), run_time=0.6)
                 self.wait(0.4)
                 self.play(FadeOut(texto), run_time=0.3)
-                # limpia el lienzo entre un caso y otro
                 celdas.clear()
                 etiquetas.clear()
                 bloques_rect.clear()
