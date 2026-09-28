@@ -133,16 +133,6 @@ g++ -std=c++17 -O2 -o sqrt_decomposition sqrt_decomposition.cpp
 ./sqrt_decomposition
 ```
 
-Salida esperada:
-
-```
-46
-52
-10
-112
-15
-```
-
 **2) Versión instrumentada (genera los eventos que usa la animación)**
 
 ```bash
