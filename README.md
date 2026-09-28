@@ -34,7 +34,7 @@ compilar y renderizar — no hay pasos animados manualmente.
 .
 ├── README.md
 ├── requirements.txt
-├── src/
+├── SqrtDescomposition_with_log/
 │   ├── sqrt_decomp_instrumentado.cpp   # Implementación + logging de eventos (operaciones principales)
 │   └── casos_borde.cpp                 # Implementación + logging de eventos (casos borde)
 └── animacion/
